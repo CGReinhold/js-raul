@@ -1,0 +1,692 @@
+import { Image, Notes, Head } from "mdx-deck";
+import { yellow } from 'mdx-deck/themes'
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark } from "@code-surfer/themes";
+import jsimage from "./assets/js.png";
+import eventLoop from "./assets/eventLoop.png";
+import QuoteLayout from './quoteLayout'
+
+export const theme = yellow;
+
+# Javascript com Raul Seixas 💻🎤
+
+Cleyson Reinhold
+
+---
+
+<Image src={jsimage} style={{ width: 844, height: 377 }} />
+
+---
+
+## Roteiro
+
+- Tipagem dinâmica
+- Referência de objetos
+- Loop de eventos
+- Imutabilidade e Funções Puras
+
+---
+
+# Tipagem dinâmica
+
+Eu sou a vela que acende  
+Eu sou a luz que se apaga  
+Eu sou a beira do abismo  
+Eu sou o tudo e o nada  
+ 
+Eu sou o amargo da língua  
+A mãe, o pai e o avô  
+O filho que ainda não veio  
+O início, o fim e o meio  
+
+Gita
+
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```js title="Tipagem dinâmica" 1:2
+// uma variável pode ser um número
+let euSou = 10;
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 4:5
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 7:8
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+
+// se transformar em um objeto
+euSou = { inicio: 0, meio: 1, fim: 2 };
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 10:15
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+
+// se transformar em um objeto
+euSou = { inicio: 0, meio: 1, fim: 2 };
+
+const mae = { nome: "Ana" };
+const pai = { nome: "Paulo" };
+const avo = { nome: "José" };
+
+// virar uma lista
+euSou = [mae, pai, avo];
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 17:23
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+
+// se transformar em um objeto
+euSou = { inicio: 0, meio: 1, fim: 2 };
+
+const mae = { nome: "Ana" };
+const pai = { nome: "Paulo" };
+const avo = { nome: "José" };
+
+// virar uma lista
+euSou = [mae, pai, avo];
+
+class Luz {
+  acende() {}
+  apaga() {}
+}
+
+// um objeto criado por uma classe
+euSou = new Luz();
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 25:26
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+
+// se transformar em um objeto
+euSou = { inicio: 0, meio: 1, fim: 2 };
+
+const mae = { nome: "Ana" };
+const pai = { nome: "Paulo" };
+const avo = { nome: "José" };
+
+// virar uma lista
+euSou = [mae, pai, avo];
+
+class Luz {
+  acende() {}
+  apaga() {}
+}
+
+// um objeto criado por uma classe
+euSou = new Luz();
+
+// pode ser até mesmo uma função
+euSou = function filhoVindo() {  }
+```
+
+</Step>
+
+<Step>
+
+```js title="Tipagem dinâmica" 28:29
+// uma variável pode ser um número
+let euSou = 10;
+
+// passar a ser um texto
+euSou = "a vela que acende";
+
+// se transformar em um objeto
+euSou = { inicio: 0, meio: 1, fim: 2 };
+
+const mae = { nome: "Ana" };
+const pai = { nome: "Paulo" };
+const avo = { nome: "José" };
+
+// virar uma lista
+euSou = [mae, pai, avo];
+
+class Luz {
+  acende() {}
+  apaga() {}
+}
+
+// um objeto criado por uma classe
+euSou = new Luz();
+
+// pode ser até mesmo uma função
+euSou = function filhoVindo() {  }
+
+// pode ser tudo, ou nada
+euSou = undefined;
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurfer>
+
+```js title="Tipagem dinâmica" subtitle="'const' não permite a reatribuição de valores"
+const nome = "Raul Seixas";
+nome = "Tim Maia";
+
+// Uncaught TypeError: invalid assignment to const 'nome'
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Tipagem dinâmica" subtitle="'var' pode ter comportamentos inesperados">
+
+```js
+function loop() {
+  for (var i = 0; i < 5; i++) {
+    setTimeout(() => {
+      console.log(i);
+    }, 5)
+  }
+}
+loop();
+
+// 5
+// 5
+// 5
+// 5
+// 5
+```
+
+```js
+function loop() {
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      console.log(i);
+    }, 5)
+  }
+}
+loop();
+
+// 0
+// 1
+// 2
+// 3
+// 4
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Tipagem dinâmica" subtitle="'var' pode ter comportamentos inesperados">
+
+```js
+function teste() {
+  a = 42;
+  console.log(a);
+  
+  var a;
+}
+teste();
+
+// 42
+```
+
+```js
+function teste() {
+  a = 42;
+  console.log(a);
+  
+  let a;
+}
+teste();
+
+// Uncaught ReferenceError: 
+// can't access lexical 
+// declaration 'a' 
+// before initialization
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Referência de objetos
+
+Pedro, onde cê vai eu também vou  
+Pedro, onde cê vai eu também vou  
+Mas tudo acaba onde começou  
+
+Meu amigo Pedro
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Referência de objetos">
+
+```js
+function limparTexto(texto) {
+  texto = "";
+}
+```
+
+```js
+function limparNome(pessoa) {
+  pessoa.nome = "";
+}
+```
+
+</Step>
+
+<Step title="Referência de objetos">
+
+```js 5:6
+function limparTexto(texto) {
+  texto = "";
+}
+
+const nome = "Raul";
+limparTexto(nome);
+```
+
+```js 5:6
+function limparNome(pessoa) {
+  pessoa.nome = "";
+}
+
+const pessoa = { nome: "Raul" };
+limparNome(pessoa);
+```
+
+</Step>
+
+<Step title="Referência de objetos">
+
+```js 8:9
+function limparTexto(texto) {
+  texto = "";
+}
+
+const nome = "Raul";
+limparTexto(nome);
+
+console.log("Nome:" nome);
+// Nome: Raul
+```
+
+```js 8:9
+function limparNome(pessoa) {
+  pessoa.nome = "";
+}
+
+const pessoa = { nome: "Raul" };
+limparNome(pessoa);
+
+console.log("Pessoa:", pessoa);
+// Pessoa: Object { nome: "" }
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+## Referência de objetos
+
+#### Acessados por valor
+- números
+- strings
+- booleanos
+
+#### Acessados por referência
+- objetos
+- listas
+- funções
+
+---
+
+# Loop de eventos
+
+E nas mensagens que nos chegam sem parar  
+Ninguém, ninguém pode notar  
+Estão muito ocupados pra pensar  
+
+S.O.S.
+
+---
+
+<Image src={eventLoop} style={{ width: 1000, height: 532 }} />
+
+---
+
+# Imutabilidade e Funções Puras
+
+Ói, olhe o céu, já não é o mesmo céu que você conheceu, não é mais
+
+O Trem das Sete
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```js title="Imutabilidade e Funções Puras"
+function getPessoaSemNome(pessoa) {
+  return { ...pessoa, nome: "" };
+}
+```
+
+</Step>
+
+<Step>
+
+```js title="Imutabilidade e Funções Puras" 5:6
+function getPessoaSemNome(pessoa) {
+  return { ...pessoa, nome: "" };
+}
+
+const pessoa = { nome: "Raul" };
+const novaPessoa = getPessoaSemNome(pessoa);
+```
+
+</Step>
+
+<Step>
+
+```js title="Imutabilidade e Funções Puras" 8:11
+function getPessoaSemNome(pessoa) {
+  return { ...pessoa, nome: "" };
+}
+
+const pessoa = { nome: "Raul" };
+const novaPessoa = getPessoaSemNome(pessoa);
+
+console.log("Pessoa:", pessoa);
+console.log("Nova pessoa", novaPessoa);
+// Pessoa: Object { nome: "Raul" }
+// Nova pessoa: Object { nome: "" }
+```
+
+</Step>
+
+<Step>
+
+```js title="Imutabilidade e Funções Puras" 13:14
+function getPessoaSemNome(pessoa) {
+  return { ...pessoa, nome: "" };
+}
+
+const pessoa = { nome: "Raul" };
+const novaPessoa = getPessoaSemNome(pessoa);
+
+console.log("Pessoa:", pessoa);
+console.log("Nova pessoa", novaPessoa);
+// Pessoa: Object { nome: "Raul" }
+// Nova pessoa: Object { nome: "" }
+
+console.log("É a mesma pessoa?", pessoa === novaPessoa);
+// É a mesma pessoa? false
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+## Imutabilidade e Funções Puras
+
+#### Vantages
+
+- Maior facilidade para testar e refatorar
+- Código mais limpo*
+- Permitem memoize
+- Maior facilidade para paralelizar
+
+---
+
+## Imutabilidade e Funções Puras
+
+#### Desvantagens
+
+- Nem sempre são aplicáveis
+- Código menos legível*
+- Pode gerar processamento desnecessário
+
+---
+
+## Imutabilidade e Funções Puras
+
+#### Exemplos
+
+- Array.map
+- Array.flatMap*
+- Array.reduce
+- Array.filter
+- Array.concat
+- Array.slice
+- Array.find
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+const compradores = [];
+
+function buscarCompradores(lojas) {
+  lojas.forEach((loja) => {
+    compradores.push(loja.comprador);
+  });
+}
+```
+
+```js
+function buscarCompradores(lojas) {
+  return lojas.map((loja) => loja.comprador);
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+const compradores = [];
+
+function buscarCompradores(lojas) {
+  lojas.forEach((loja) => {
+    const compradoresDaLoja = loja.compradores;
+
+    compradoresDaLoja.forEach((comprador) => {
+      compradores.push(comprador);
+    });
+  });
+}
+```
+
+```js
+function buscarCompradores(lojas) {
+  return lojas.flatMap((loja) => loja.compradores);
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+function getQuantidadeCompradoresAtivos(lojas) {
+  let compradoresAtivos = 0;
+
+  lojas.forEach((loja) => {
+    if (loja.comprador.estaAtivo) {
+      compradoresAtivos++;
+    }
+  });
+
+  return compradoresAtivos;
+}
+```
+
+```js
+function buscarCompradores(lojas) {
+  return lojas.reduce((quantidade, loja) => {
+    if (loja.comprador.estaAtivo) {
+      return quantidade + 1;
+    }
+    return quantidade;
+  }, 0);
+}
+```
+
+</Step>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+function getQuantidadeCompradoresAtivos(lojas) {
+  let compradoresAtivos = 0;
+
+  lojas.forEach((loja) => {
+    if (loja.comprador.estaAtivo) {
+      compradoresAtivos++;
+    }
+  });
+
+  return compradoresAtivos;
+}
+```
+
+```js
+function buscarCompradores(lojas) {
+  return lojas.filter((loja) => loja.comprador.estaAtivo).length;
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+const [produtos, setProdutos] = useState([]);
+
+function selecionarProdutos(produtoSelecionado) {
+  const todosProdutos = produtos;
+
+  todosProdutos.forEach((produto) => {
+    if (produto.id === produtoSelecionado.id) {
+      produto.selecionado = true;
+    }
+  });
+
+  setProdutos(todosProdutos);
+}
+```
+
+</Step>
+
+<Step title="Imutabilidade e Funções Puras">
+
+```js
+const [produtos, setProdutos] = useState([]);
+
+function selecionarProdutos(produtoSelecionado) {
+  const produtosAtualizados = produtos.map((produto) => {
+    if (produto.id === produtoSelecionado.id) {
+      return { ...produto, selecionado: true };
+    }
+
+    return produto;
+  });
+
+  setProdutos(produtosAtualizados);
+}
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+Obrigado!
+
+---
